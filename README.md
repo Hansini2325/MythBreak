@@ -997,14 +997,4 @@ application-local.properties
 *.log
 ```
 
-**Do not put your real password, JWT secret, or personal credentials in GitHub.**
 
----
-
-### What we should do next
-
-Don't start uploading yet. We should do this **one step at a time** so the repository looks like a proper academic submission rather than just a code dump.
-
-**Next step should be the `docs/` folder and the 6 required diagrams** — Architecture, Workflow, Use Case, Class, Sequence, and ER Diagram. The VITyarthi instructions explicitly require these design artefacts. 
-
-Once those are ready, we can do the final **GitHub upload + repository description + commit structure**.
