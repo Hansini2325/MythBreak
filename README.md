@@ -244,5 +244,13 @@ A successful test execution should complete without test failures, and the appli
 
 # 7. Screenshots
 <img width="947" height="473" alt="landing page" src="https://github.com/user-attachments/assets/5d1ce0f2-a015-4b62-95cc-56274edab763" />
+<img width="959" height="468" alt="image" src="https://github.com/user-attachments/assets/1f10ef3e-7684-4f46-9449-14f7ce3e9616" />
+<img width="948" height="472" alt="image" src="https://github.com/user-attachments/assets/e8a814a3-a7de-4096-8b35-7ed83e4164bc" />
+<img width="959" height="473" alt="image" src="https://github.com/user-attachments/assets/f6293775-02d3-4cb3-aa98-d7bf283624a7" />
+<img width="956" height="470" alt="image" src="https://github.com/user-attachments/assets/70c6bdb6-d356-4f01-8ec3-b618e6b4f6e1" />
+<img width="959" height="472" alt="image" src="https://github.com/user-attachments/assets/4e874840-b975-4c84-8b93-c65b7417c2d4" />
+
+
+
 
 
