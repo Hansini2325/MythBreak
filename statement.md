@@ -1,168 +1,58 @@
+# Problem Statement
 
-# MythBreak – Project Statement
+Many students and freshers learn technical and professional skills but face difficulty in converting those skills into real opportunities such as internships, jobs, freelance projects, and other forms of work. There is often a gap between **learning a skill, demonstrating it, and finding an opportunity that requires that skill**.
 
-## 💥 Break Myths. 🛠️ Build Skills. 📚 Learn. 🚀 Apply. 💰 Earn.
+**MythBreak** aims to address this problem by providing a single platform where users can learn relevant skills, build their profiles, showcase their abilities, and connect with suitable opportunities. Companies and recruiters can also post opportunities based on required skills and identify candidates according to their skill compatibility.
 
----
-
-## 1. Project Title
-
-# MythBreak
-
-**Tagline:** Break Myths. Build Skills. Learn. Apply. Earn.
-
----
-
-## 2. Problem Statement
-
-Students and freshers often acquire technical and professional skills from multiple learning platforms but face significant difficulties converting those skills into practical career opportunities.
-
-There is a structural disconnect between:
-
-* **Learning a skill:** Completing courses without practical application.
-* **Developing capability:** Lacking real-world project experience.
-* **Showcasing skills:** Ineffective presentation of candidate capabilities.
-* **Finding opportunities:** Difficulty locating jobs, internships, or projects aligned with existing skill sets.
-* **Matching suitability:** Inability for candidates to quickly identify missing skill gaps for a specific role.
-
-At the same time, companies and recruiters struggle to discover candidates whose specific skill sets match the technical requirements of open internships, jobs, and freelance projects.
-
-MythBreak addresses this gap by providing a unified, skill-centric platform connecting learners, earners, educators, and organizations.
-
----
-
-## 3. Project Scope
-
-The scope of MythBreak includes the development of a full-stack, web-based software application supporting:
-
-* **Identity Management:** User registration, secure login, password hashing, and stateless JWT authentication.
-* **Role-Based Access Control:** Fine-grained authorization across four primary roles (Learner, Earner, Educator, Company).
-* **Course Management:** Content creation, metadata management, and course enrollment pipelines.
-* **Skill Catalog & Profiling:** Standardized skill directory and dynamic user skill profiles.
-* **Opportunity Discovery:** Publishing and browsing jobs, internships, and freelance projects with specific required skill tags.
-* **Automated Skill Matching:** Algorithmic calculation of candidate skill fit percentage and missing skill gap analysis.
-* **Application Management:** Application submission, tracking, and recruiter status updates.
-* **Persistence & APIs:** Relational database schema execution with MySQL and RESTful API endpoints built using Java Spring Boot.
-
----
-
-## 4. Target Users
-
-MythBreak accommodates four distinct platform actors:
-
-### 👨‍🎓 Learner
-Students and beginners seeking structured skill development through educational content and courses.
-
-### 💼 Earner
-Skilled individuals looking to showcase their capabilities and find matching jobs, internships, and freelance opportunities.
-
-### 👨‍🏫 Educator
-Instructors and content creators providing courses and learning resources to platform users.
-
-### 🏢 Company / Recruiter
-Organizations looking to publish opportunities, review candidates, and evaluate candidates through skill-match analytics.
-
----
-
-## 5. High-Level Features
-
-### Authentication & Authorization
-* User registration and login interfaces
-* BCrypt password encryption
-* Stateless JWT session validation
-* Role-based access restrictions on API routes
-
-### Course Management
-* Catalog browsing and detailed views
-* Instructor course publishing
-* Course enrollment tracking
-
-### Skill Management
-* Centralized skill library
-* User profile skill tagging
-* Opportunity skill requirement mapping
-
-### Opportunity Management
-* Job, internship, and project listings
-* Detailed skill requirement definitions
-* Filtering and opportunity search
-
-### Skill Matching Engine
-Calculates candidate suitability using required skill coverage:
-
-$$\text{Match Percentage} = \left( \frac{\text{Matched Required Skills}}{\text{Total Required Skills}} \right) \times 100$$
-
-* Identifies matching candidate skills
-* Highlights missing required skills
-
-### Application Management
-* Direct opportunity application workflows
-* Recruiter candidate review interfaces
-* Application pipeline status updates
-
----
-
-## 6. Core Workflow
-
-```text
-               ┌──────────────┐
-               │    Learn     │
-               └──────┬───────┘
-                      │
-                      ▼
-               ┌──────────────┐
-               │ Build Skills │
-               └──────┬───────┘
-                      │
-                      ▼
-               ┌──────────────┐
-               │ Show Profile │
-               └──────┬───────┘
-                      │
-                      ▼
-               ┌──────────────┐
-               │ Find Match   │
-               └──────┬───────┘
-                      │
-                      ▼
-               ┌──────────────┐
-               │    Apply     │
-               └──────┬───────┘
-                      │
-                      ▼
-               ┌──────────────┐
-               │  Earn / Job  │
-               └──────────────┘
-
-```
-
----
-
-## 7. Expected Outcome
-
-The expected outcome is a fully functional, tested, database-backed web application demonstrating how learning, skill building, and recruitment can be integrated into a single ecosystem.
-
-The project validates key software engineering competencies:
-
-* **Object-Oriented Programming:** Modular, scalable Java architecture.
-* **Enterprise Frameworks:** Spring Boot 3, Spring Security, Spring Data JPA.
-* **REST Services:** Statless API design and structured JSON responses.
-* **Relational Storage:** Relational database normalization, indexing, and foreign keys using MySQL 8.
-* **Automated Verification:** Unit testing and mock validation via JUnit 5 and Mockito.
-* **Software Design:** Complete UML and architectural documentation.
-
----
-
-## 8. Project Motto
+The project follows the core journey:
 
 **Learn → Build Skills → Showcase → Apply → Earn**
 
-### MythBreak
+# Scope of the Project
 
-> *Break the myth that learning alone is enough. Build skills. Show what you can do. Find where those skills create real opportunities.*
+The scope of MythBreak includes the development of a web-based platform that connects **learners, earners, educators, and companies/recruiters** within a common skill-based ecosystem.
 
-```
+The project covers:
 
-<FollowUp label="Shall we generate the 6 design diagrams for the docs/ folder now?" query="Generate the Mermaid and PlantUML scripts for the 6 required diagrams in the docs/ folder (Architecture, Workflow, Use Case, Class, Sequence, and ER diagrams)."/>
+* User registration and authentication.
+* Different user roles and role-based access.
+* Course and learning-resource management.
+* Skill creation and management.
+* User profile and skill showcasing.
+* Opportunity creation and management.
+* Skill-based matching between candidates and opportunities.
+* Application submission and application-status management.
+* Basic validation, security, and error handling.
 
-```
+The project focuses on providing a functional academic prototype of a skill-to-opportunity platform.
+
+# Target Users
+
+### 1. Learners
+
+Students and beginners who want to learn new technical or professional skills through courses and resources.
+
+### 2. Earners
+
+Students, freshers, and skilled individuals who want to showcase their skills and find jobs, internships, freelance projects, or other opportunities.
+
+### 3. Educators
+
+Teachers, mentors, and skilled professionals who want to create and provide courses or learning content.
+
+### 4. Companies/Recruiters
+
+Organizations, startups, and recruiters who want to post opportunities and find candidates based on their required skills.
+
+# High-Level Features
+
+* **User Registration and Login** – Secure registration and authentication for different user roles.
+* **Role-Based Access** – Different functionalities are provided for Learners, Earners, Educators, and Companies/Recruiters.
+* **Course Management** – Educators can create and manage courses, while learners can access available courses.
+* **Skill Management** – Users can maintain their skills and connect them with courses and opportunities.
+* **Profile and Skill Showcase** – Earners can build profiles and showcase their skills.
+* **Opportunity Management** – Companies can create and manage jobs, internships, freelance projects, and other opportunities.
+* **Skill-Based Matching** – The system compares candidate skills with the skills required by an opportunity and calculates a match percentage.
+* **Application Management** – Earners can apply for opportunities and companies can manage received applications.
+* **Validation and Error Handling** – The system validates user inputs and handles invalid requests appropriately.
+
