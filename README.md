@@ -241,3 +241,8 @@ For protected APIs:
 ### Expected Testing Result
 
 A successful test execution should complete without test failures, and the application should start successfully with the configured MySQL database.
+
+# 7. Screenshots
+<img width="947" height="473" alt="landing page" src="https://github.com/user-attachments/assets/5d1ce0f2-a015-4b62-95cc-56274edab763" />
+
+
