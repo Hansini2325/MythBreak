@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>MythBreak – Learn, Build Skills, Showcase, Earn</title>
+    <meta name="description" content="MythBreak is a skill-development and opportunity platform. Learn from educators, build your portfolio, and get matched with real jobs and projects based on your actual skills."/>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <style>
+        .features-section {
+            padding: 4rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .section-heading {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+        .section-lead {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 2.5rem;
+        }
+        .feature-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .feature-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.375rem;
+            color: var(--text);
+        }
+        .feature-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .journey-section {
+            background: var(--bg-subtle);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 3.5rem 2rem;
+            text-align: center;
+        }
+        .journey-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .journey-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.25rem 1.5rem;
+            flex: 1;
+            min-width: 160px;
+        }
+        .journey-step-num {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+        .journey-step-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .journey-step-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .journey-arrow {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            padding: 0 0.25rem;
+        }
+        .cta-section {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: var(--bg-white);
+            border-top: 1px solid var(--border);
+        }
+        .cta-section h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        .cta-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1.75rem;
+            font-size: 0.95rem;
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--bg-subtle);
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.825rem;
+        }
+        .nav-auth { display: flex; gap: 0.625rem; align-items: center; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">MythBreak</a>
+        <div class="navbar-links">
+            <a href="#how-it-works">How it works</a>
+            <a href="#roles">Who it's for</a>
+            <a href="/courses.html">Courses</a>
+            <a href="/opportunities.html">Opportunities</a>
+        </div>
+        <div class="nav-auth">
+            <a href="/login.html" class="btn btn-secondary btn-sm">Login</a>
+            <a href="/register.html" class="btn btn-primary btn-sm">Get started</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1 class="hero-title">
+            Skills get you hired.<br>
+            <span class="brand">MythBreak proves it.</span>
+        </h1>
+        <p class="hero-subtitle">
+            Learn from qualified educators, build a verifiable skill portfolio, and get matched with jobs, internships, and projects that actually fit your skills.
+        </p>
+        <div class="hero-cta">
+            <a href="/register.html" class="btn btn-primary btn-lg">Create free account</a>
+            <a href="/courses.html" class="btn btn-secondary btn-lg">Browse courses</a>
+        </div>
+        <div class="hero-workflow" style="margin-top:2.5rem;">
+            <span class="workflow-step">Learn</span>
+            <span class="workflow-arrow">→</span>
+            <span class="workflow-step">Build skills</span>
+            <span class="workflow-arrow">→</span>
+            <span class="workflow-step">Showcase</span>
+            <span class="workflow-arrow">→</span>
+            <span class="workflow-step">Apply</span>
+            <span class="workflow-arrow">→</span>
+            <span class="workflow-step">Earn</span>
+        </div>
+    </section>
+
+    <section class="journey-section" id="how-it-works">
+        <h2 class="section-heading" style="font-size:1.4rem;">How MythBreak works</h2>
+        <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:0;">A simple journey from learning to earning.</p>
+        <div class="journey-steps">
+            <div class="journey-step">
+                <div class="journey-step-num">1</div>
+                <div class="journey-step-label">Register</div>
+                <div class="journey-step-desc">Choose your role — Learner, Earner, Educator, or Company</div>
+            </div>
+            <div class="journey-arrow" style="padding-top:1.25rem;">→</div>
+            <div class="journey-step">
+                <div class="journey-step-num">2</div>
+                <div class="journey-step-label">Learn or build</div>
+                <div class="journey-step-desc">Enroll in courses and add skills to your profile</div>
+            </div>
+            <div class="journey-arrow" style="padding-top:1.25rem;">→</div>
+            <div class="journey-step">
+                <div class="journey-step-num">3</div>
+                <div class="journey-step-label">Get matched</div>
+                <div class="journey-step-desc">Our matching algorithm scores your fit for each opportunity</div>
+            </div>
+            <div class="journey-arrow" style="padding-top:1.25rem;">→</div>
+            <div class="journey-step">
+                <div class="journey-step-num">4</div>
+                <div class="journey-step-label">Apply and earn</div>
+                <div class="journey-step-desc">Apply directly and track your application status</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section" id="features">
+        <h2 class="section-heading">What the platform offers</h2>
+        <p class="section-lead">MythBreak connects learning with real opportunities in one place.</p>
+        <div class="grid-3">
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <div class="feature-title">Expert-led courses</div>
+                <div class="feature-desc">Learn from qualified educators. Track your progress and complete courses at your own pace.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">Skill match scoring</div>
+                <div class="feature-desc">Our algorithm compares your declared skills against opportunity requirements and gives you a real match percentage.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📁</div>
+                <div class="feature-title">Portfolio and profile</div>
+                <div class="feature-desc">Add skills, projects, work experience, and links to your profile. Let your portfolio speak for itself.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💼</div>
+                <div class="feature-title">Jobs and opportunities</div>
+                <div class="feature-desc">Browse full-time jobs, internships, freelance projects, and open-source contributions posted by real companies.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔔</div>
+                <div class="feature-title">Application tracking</div>
+                <div class="feature-desc">Track the status of every application. Receive notifications when your status changes.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <div class="feature-title">Secure and role-based</div>
+                <div class="feature-desc">JWT authentication, BCrypt password hashing, and strict role-based access control protect your account.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="roles-section" id="roles">
+        <h2 class="section-heading">Who is MythBreak for?</h2>
+        <p style="color:var(--text-secondary);font-size:0.9rem;">Four distinct roles in one connected platform.</p>
+        <div class="roles-grid">
+            <div class="role-card">
+                <div class="role-icon">📚</div>
+                <div class="role-name">Learner</div>
+                <div class="role-desc">Enroll in courses, track your learning progress, and discover skills that advance your career.</div>
+                <br/>
+                <a href="/register.html?role=LEARNER" class="btn btn-outline btn-sm btn-full">Join as Learner</a>
+            </div>
+            <div class="role-card">
+                <div class="role-icon">💼</div>
+                <div class="role-name">Earner</div>
+                <div class="role-desc">Build your skill profile, get matched with opportunities, and apply to the ones that suit you best.</div>
+                <br/>
+                <a href="/register.html?role=EARNER" class="btn btn-outline btn-sm btn-full">Join as Earner</a>
+            </div>
+            <div class="role-card">
+                <div class="role-icon">🎓</div>
+                <div class="role-name">Educator</div>
+                <div class="role-desc">Create and publish courses, manage content, and see how many learners are enrolled in your material.</div>
+                <br/>
+                <a href="/register.html?role=EDUCATOR" class="btn btn-outline btn-sm btn-full">Join as Educator</a>
+            </div>
+            <div class="role-card">
+                <div class="role-icon">🏢</div>
+                <div class="role-name">Company</div>
+                <div class="role-desc">Post opportunities and review candidates ranked by how well their skills match your requirements.</div>
+                <br/>
+                <a href="/register.html?role=COMPANY" class="btn btn-outline btn-sm btn-full">Join as Company</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Ready to get started?</h2>
+        <p>Create a free account and take the first step towards building and showcasing your skills.</p>
+        <a href="/register.html" class="btn btn-primary btn-lg">Create free account</a>
+    </section>
+
+    <footer>
+        <p>MythBreak &mdash; Learn. Build Skills. Showcase. Earn.</p>
+    </footer>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        if (Auth.isLoggedIn()) {
+            const u = Auth.getUser();
+            document.querySelector('.nav-auth').innerHTML = `
+                <span style="color:var(--text-secondary);font-size:0.875rem;">${u.firstName}</span>
+                <a href="${Auth.dashboardFor(u.role)}" class="btn btn-secondary btn-sm">Dashboard</a>
+                <button onclick="Auth.logout()" class="btn btn-secondary btn-sm">Logout</button>
+            `;
+        }
+    </script>
+</body>
+</html>

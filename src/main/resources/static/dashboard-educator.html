@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Educator Dashboard – MythBreak</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">⚡ MythBreak</a>
+        <div id="nav-user" style="display:flex;gap:0.75rem;align-items:center;"></div>
+    </nav>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-tab="overview"><span class="sidebar-icon">🏠</span>Overview</a>
+                <a href="#" class="sidebar-link" data-tab="courses"><span class="sidebar-icon">📚</span>My Courses</a>
+                <a href="#" class="sidebar-link" data-tab="profile"><span class="sidebar-icon">👤</span>Profile</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <!-- Overview -->
+            <div id="tab-overview">
+                <div class="section-header">
+                    <div>
+                        <h1 class="section-title" id="welcome-msg">🎓 Educator Dashboard</h1>
+                        <p class="section-subtitle">Manage your courses and reach</p>
+                    </div>
+                </div>
+                <div class="grid-3" style="margin-bottom:2rem;">
+                    <div class="stat-card"><div class="stat-icon purple">📚</div><div><div class="stat-value" id="s-courses">—</div><div class="stat-label">Total Courses</div></div></div>
+                    <div class="stat-card"><div class="stat-icon green">✅</div><div><div class="stat-value" id="s-published">—</div><div class="stat-label">Published</div></div></div>
+                    <div class="stat-card"><div class="stat-icon blue">👥</div><div><div class="stat-value" id="s-enrollments">—</div><div class="stat-label">Total Enrollments</div></div></div>
+                </div>
+                <div class="section-header"><h2 class="section-title" style="font-size:1.1rem;">Recent Courses</h2></div>
+                <div id="recent-courses"><div class="spinner"></div></div>
+            </div>
+
+            <!-- Courses -->
+            <div id="tab-courses" style="display:none;">
+                <div class="section-header">
+                    <div><h2 class="section-title">My Courses</h2></div>
+                    <button class="btn btn-primary btn-sm" onclick="openCourseModal()">+ Create Course</button>
+                </div>
+                <div id="courses-list"><div class="spinner"></div></div>
+            </div>
+
+            <!-- Profile -->
+            <div id="tab-profile" style="display:none;">
+                <div class="section-header"><h2 class="section-title">Educator Profile</h2></div>
+                <div class="card" style="max-width:560px;">
+                    <div id="profile-msg"></div>
+                    <form id="profile-form">
+                        <div class="form-group"><label class="form-label">Bio</label><textarea id="bio" class="form-control"></textarea></div>
+                        <div class="form-group"><label class="form-label">Expertise</label><input id="expertise" type="text" class="form-control" placeholder="e.g. Web Development, Data Science"/></div>
+                        <div class="form-group"><label class="form-label">Qualification</label><input id="qualification" type="text" class="form-control"/></div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                            <div class="form-group"><label class="form-label">City</label><input id="city" type="text" class="form-control"/></div>
+                            <div class="form-group"><label class="form-label">Country</label><input id="country" type="text" class="form-control"/></div>
+                        </div>
+                        <div class="form-group"><label class="form-label">Years of Experience</label><input id="yearsOfExperience" type="number" class="form-control" min="0"/></div>
+                        <div class="form-group"><label class="form-label">LinkedIn URL</label><input id="linkedinUrl" type="url" class="form-control"/></div>
+                        <div class="form-group"><label class="form-label">Website URL</label><input id="websiteUrl" type="url" class="form-control"/></div>
+                        <button type="submit" class="btn btn-primary">Save Profile</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Create Course Modal -->
+    <div class="modal-overlay" id="course-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Course</h3>
+                <button class="modal-close" onclick="closeCourseModal()">×</button>
+            </div>
+            <div id="course-msg"></div>
+            <form id="course-form">
+                <div class="form-group"><label class="form-label">Title *</label><input id="c-title" type="text" class="form-control" required/></div>
+                <div class="form-group"><label class="form-label">Description</label><textarea id="c-desc" class="form-control"></textarea></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                    <div class="form-group"><label class="form-label">Category</label><input id="c-category" type="text" class="form-control" placeholder="e.g. Programming"/></div>
+                    <div class="form-group"><label class="form-label">Level</label>
+                        <select id="c-level" class="form-control">
+                            <option>BEGINNER</option><option>INTERMEDIATE</option><option>ADVANCED</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group"><label class="form-label">Price (₹)</label><input id="c-price" type="number" class="form-control" min="0" placeholder="0 for free"/></div>
+                <div class="form-group">
+                    <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+                        <input type="checkbox" id="c-published"/> <span class="form-label" style="margin:0;">Publish immediately</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Create Course</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        Auth.requireRole('EDUCATOR');
+        Auth.renderNavUser('nav-user');
+        const user = Auth.getUser();
+        document.getElementById('welcome-msg').textContent = `🎓 Welcome, ${user.firstName}!`;
+
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                const tab = link.dataset.tab;
+                document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
+                document.getElementById('tab-' + tab).style.display = '';
+                if (tab === 'courses') loadCourses();
+                if (tab === 'profile') loadProfile();
+            });
+        });
+
+        async function loadOverview() {
+            try {
+                const courses = await Auth.api('/api/educator/courses').catch(() => []);
+                document.getElementById('s-courses').textContent = courses.length;
+                document.getElementById('s-published').textContent = courses.filter(c => c.published).length;
+                const totalEnrollments = courses.reduce((s, c) => s + (c.enrollmentCount || 0), 0);
+                document.getElementById('s-enrollments').textContent = totalEnrollments;
+                renderCourseGrid(courses.slice(0, 6), document.getElementById('recent-courses'));
+            } catch (err) { console.error(err); }
+        }
+
+        function renderCourseGrid(courses, container) {
+            if (!courses.length) { container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📚</div><div class="empty-state-text">No courses yet.</div></div>`; return; }
+            container.innerHTML = `<div class="grid-3">` + courses.map(c => `
+                <div class="card">
+                    <div class="card-title">${c.title}</div>
+                    <div class="card-subtitle">${c.category || ''} · ${c.level || ''}</div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;">
+                        <span style="font-size:0.85rem;color:var(--text-secondary)">₹${c.price || 0}</span>
+                        <span class="badge ${c.published ? 'badge-success' : 'badge-warning'}">${c.published ? 'Published' : 'Draft'}</span>
+                    </div>
+                    <div style="margin-top:0.75rem;display:flex;gap:0.5rem;">
+                        <button onclick="togglePublish(${c.id}, ${c.published})" class="btn btn-secondary btn-sm">${c.published ? 'Unpublish' : 'Publish'}</button>
+                    </div>
+                </div>`).join('') + '</div>';
+        }
+
+        async function loadCourses() {
+            const c = document.getElementById('courses-list');
+            c.innerHTML = '<div class="spinner"></div>';
+            try {
+                const data = await Auth.api('/api/educator/courses');
+                renderCourseGrid(data, c);
+            } catch (err) { c.innerHTML = `<div class="alert alert-error">${err.message}</div>`; }
+        }
+
+        async function togglePublish(id, isPublished) {
+            try {
+                await Auth.api(`/api/educator/courses/${id}/${isPublished ? 'unpublish' : 'publish'}`, { method: 'PUT' });
+                loadCourses();
+            } catch (err) { alert(err.message); }
+        }
+
+        async function loadProfile() {
+            try {
+                const data = await Auth.api('/api/educator/profile');
+                if (data) ['bio','expertise','qualification','city','country','yearsOfExperience','linkedinUrl','websiteUrl'].forEach(f => {
+                    const el = document.getElementById(f);
+                    if (el && data[f] != null) el.value = data[f];
+                });
+            } catch { }
+        }
+
+        document.getElementById('profile-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const msg = document.getElementById('profile-msg');
+            const body = {};
+            ['bio','expertise','qualification','city','country','yearsOfExperience','linkedinUrl','websiteUrl'].forEach(f => { body[f] = document.getElementById(f).value; });
+            try {
+                await Auth.api('/api/educator/profile', { method: 'PUT', body: JSON.stringify(body) });
+                msg.innerHTML = '<div class="alert alert-success">✅ Profile saved!</div>';
+                setTimeout(() => msg.innerHTML = '', 3000);
+            } catch (err) { msg.innerHTML = `<div class="alert alert-error">⚠️ ${err.message}</div>`; }
+        });
+
+        function openCourseModal() { document.getElementById('course-modal').classList.add('active'); }
+        function closeCourseModal() { document.getElementById('course-modal').classList.remove('active'); }
+
+        document.getElementById('course-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const msg = document.getElementById('course-msg');
+            const body = { title: document.getElementById('c-title').value, description: document.getElementById('c-desc').value, category: document.getElementById('c-category').value, level: document.getElementById('c-level').value, price: parseFloat(document.getElementById('c-price').value) || 0, published: document.getElementById('c-published').checked };
+            try {
+                await Auth.api('/api/educator/courses', { method: 'POST', body: JSON.stringify(body) });
+                closeCourseModal();
+                loadCourses();
+                loadOverview();
+            } catch (err) { msg.innerHTML = `<div class="alert alert-error">${err.message}</div>`; }
+        });
+
+        loadOverview();
+    </script>
+</body>
+</html>

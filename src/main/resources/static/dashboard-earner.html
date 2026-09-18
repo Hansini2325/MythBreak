@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Earner Dashboard – MythBreak</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">MythBreak</a>
+        <div class="navbar-links">
+            <a href="/opportunities.html">Browse Opportunities</a>
+        </div>
+        <div id="nav-user" style="display:flex;gap:0.625rem;align-items:center;"></div>
+    </nav>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-tab="overview"><span class="sidebar-icon">🏠</span>Overview</a>
+                <a href="#" class="sidebar-link" data-tab="applications"><span class="sidebar-icon">📋</span>Applications</a>
+                <a href="#" class="sidebar-link" data-tab="portfolio"><span class="sidebar-icon">📁</span>Portfolio</a>
+                <a href="#" class="sidebar-link" data-tab="matching"><span class="sidebar-icon">📊</span>Skill Match</a>
+                <a href="#" class="sidebar-link" data-tab="notifications"><span class="sidebar-icon">🔔</span>Notifications</a>
+                <a href="#" class="sidebar-link" data-tab="profile"><span class="sidebar-icon">👤</span>Profile</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div id="tab-overview">
+                <div class="section-header">
+                    <div>
+                        <h1 class="section-title" id="welcome-msg">Dashboard</h1>
+                        <p class="section-subtitle">Your career at a glance</p>
+                    </div>
+                </div>
+                <div class="grid-4" style="margin-bottom:2rem;">
+                    <div class="stat-card"><div class="stat-icon blue">📋</div><div><div class="stat-value" id="s-apps">—</div><div class="stat-label">Applications</div></div></div>
+                    <div class="stat-card"><div class="stat-icon green">✅</div><div><div class="stat-value" id="s-selected">—</div><div class="stat-label">Selected</div></div></div>
+                    <div class="stat-card"><div class="stat-icon orange">📁</div><div><div class="stat-value" id="s-projects">—</div><div class="stat-label">Projects</div></div></div>
+                    <div class="stat-card"><div class="stat-icon purple">🛠</div><div><div class="stat-value" id="s-skills">—</div><div class="stat-label">Skills</div></div></div>
+                </div>
+                <div class="section-header"><h2 class="section-title" style="font-size:1.05rem;">Recent Applications</h2></div>
+                <div id="recent-apps"><div class="spinner"></div></div>
+            </div>
+
+            <div id="tab-applications" style="display:none;">
+                <div class="section-header">
+                    <div><h2 class="section-title">My Applications</h2><p class="section-subtitle">Track your opportunity applications</p></div>
+                    <a href="/opportunities.html" class="btn btn-primary btn-sm">Browse opportunities</a>
+                </div>
+                <div id="apps-list"><div class="spinner"></div></div>
+            </div>
+
+            <div id="tab-portfolio" style="display:none;">
+                <div class="section-header">
+                    <div><h2 class="section-title">My Portfolio</h2><p class="section-subtitle">Projects you have built</p></div>
+                    <button class="btn btn-primary btn-sm" onclick="openProjectModal()">Add project</button>
+                </div>
+                <div id="projects-list"><div class="spinner"></div></div>
+            </div>
+
+            <div id="tab-matching" style="display:none;">
+                <div class="section-header">
+                    <h2 class="section-title">Skill Match</h2>
+                </div>
+                <p style="color:var(--text-secondary);font-size:0.875rem;margin-bottom:1.5rem;">Opportunities ranked by how well your skills match their requirements.</p>
+                <div id="match-list"><div class="spinner"></div></div>
+            </div>
+
+            <div id="tab-notifications" style="display:none;">
+                <div class="section-header"><h2 class="section-title">Notifications</h2></div>
+                <div id="notifs-list"><div class="spinner"></div></div>
+            </div>
+
+            <div id="tab-profile" style="display:none;">
+                <div class="section-header"><h2 class="section-title">Profile & Skills</h2></div>
+                <div class="grid-2">
+                    <div class="card">
+                        <h3 style="font-size:0.95rem;font-weight:700;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:0.75rem;">Basic info</h3>
+                        <div id="profile-msg"></div>
+                        <form id="profile-form">
+                            <div class="form-group"><label class="form-label">Bio</label><textarea id="bio" class="form-control" placeholder="Tell us about yourself..."></textarea></div>
+                            <div class="form-group"><label class="form-label">Phone</label><input id="phoneNumber" type="text" class="form-control"/></div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                                <div class="form-group"><label class="form-label">City</label><input id="city" type="text" class="form-control"/></div>
+                                <div class="form-group"><label class="form-label">Country</label><input id="country" type="text" class="form-control"/></div>
+                            </div>
+                            <div class="form-group"><label class="form-label">LinkedIn</label><input id="linkedinUrl" type="url" class="form-control"/></div>
+                            <div class="form-group"><label class="form-label">GitHub</label><input id="githubUrl" type="url" class="form-control"/></div>
+                            <div class="form-group"><label class="form-label">Portfolio URL</label><input id="portfolioUrl" type="url" class="form-control"/></div>
+                            <div class="form-group"><label class="form-label">Years of experience</label><input id="yearsOfExperience" type="number" class="form-control" min="0"/></div>
+                            <button type="submit" class="btn btn-primary">Save profile</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size:0.95rem;font-weight:700;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:0.75rem;">My skills</h3>
+                        <div id="skills-display" style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1rem;min-height:36px;"></div>
+                        <div style="display:flex;gap:0.5rem;">
+                            <input id="skill-search" type="text" class="form-control" placeholder="Search and add skill..."/>
+                            <button onclick="searchSkill()" class="btn btn-secondary btn-sm">Add</button>
+                        </div>
+                        <div id="skill-results" style="margin-top:0.75rem;"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="project-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Add project</h3>
+                <button class="modal-close" onclick="closeProjectModal()">×</button>
+            </div>
+            <div id="project-msg"></div>
+            <form id="project-form">
+                <div class="form-group"><label class="form-label">Title *</label><input id="p-title" type="text" class="form-control" required/></div>
+                <div class="form-group"><label class="form-label">Description</label><textarea id="p-desc" class="form-control"></textarea></div>
+                <div class="form-group"><label class="form-label">Project URL</label><input id="p-url" type="url" class="form-control"/></div>
+                <div class="form-group"><label class="form-label">GitHub URL</label><input id="p-github" type="url" class="form-control"/></div>
+                <div class="form-group"><label class="form-label">Demo URL</label><input id="p-demo" type="url" class="form-control"/></div>
+                <button type="submit" class="btn btn-primary btn-full">Save project</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        Auth.requireRole('EARNER');
+        Auth.renderNavUser('nav-user');
+        const user = Auth.getUser();
+        document.getElementById('welcome-msg').textContent = `Welcome, ${user.firstName}!`;
+
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                const tab = link.dataset.tab;
+                document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
+                document.getElementById('tab-' + tab).style.display = '';
+                if (tab === 'applications') loadApps();
+                if (tab === 'portfolio') loadProjects();
+                if (tab === 'matching') loadMatches();
+                if (tab === 'notifications') loadNotifs();
+                if (tab === 'profile') loadProfile();
+            });
+        });
+
+        async function loadOverview() {
+            try {
+                const [apps, projects, profile] = await Promise.all([
+                    Auth.api('/api/earner/applications').catch(() => []),
+                    Auth.api('/api/earner/projects').catch(() => []),
+                    Auth.api('/api/earner/profile').catch(() => null)
+                ]);
+                document.getElementById('s-apps').textContent = apps.length;
+                document.getElementById('s-selected').textContent = apps.filter(a => a.status === 'SELECTED').length;
+                document.getElementById('s-projects').textContent = projects.length;
+                document.getElementById('s-skills').textContent = profile && profile.skills ? profile.skills.length : 0;
+
+                const c = document.getElementById('recent-apps');
+                if (!apps.length) {
+                    c.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-text">No applications yet. <a href="/opportunities.html" style="color:var(--primary);">Browse opportunities</a></div></div>`;
+                    return;
+                }
+                c.innerHTML = `<div class="table-container"><table><thead><tr><th>Opportunity</th><th>Company</th><th>Status</th><th>Applied</th></tr></thead><tbody>` +
+                    apps.slice(0, 5).map(a => `<tr><td>${a.opportunityTitle}</td><td>${a.companyName || '—'}</td><td><span class="badge ${statusBadge(a.status)}">${a.status}</span></td><td>${new Date(a.appliedAt).toLocaleDateString('en-IN')}</td></tr>`).join('') +
+                    `</tbody></table></div>`;
+            } catch (err) { }
+        }
+
+        function statusBadge(s) {
+            return { APPLIED:'badge-info', SHORTLISTED:'badge-warning', SELECTED:'badge-success', REJECTED:'badge-danger' }[s] || 'badge-info';
+        }
+
+        async function loadApps() {
+            const c = document.getElementById('apps-list');
+            c.innerHTML = '<div class="spinner"></div>';
+            try {
+                const data = await Auth.api('/api/earner/applications');
+                if (!data.length) { c.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-text">No applications yet.</div></div>`; return; }
+                c.innerHTML = `<div class="table-container"><table><thead><tr><th>Opportunity</th><th>Company</th><th>Type</th><th>Status</th><th>Applied</th></tr></thead><tbody>` +
+                    data.map(a => `<tr><td>${a.opportunityTitle}</td><td>${a.companyName || '—'}</td><td>${a.opportunityType || '—'}</td><td><span class="badge ${statusBadge(a.status)}">${a.status}</span></td><td>${new Date(a.appliedAt).toLocaleDateString('en-IN')}</td></tr>`).join('') +
+                    `</tbody></table></div>`;
+            } catch (err) { c.innerHTML = `<div class="alert alert-error">${err.message}</div>`; }
+        }
+
+        async function loadProjects() {
+            const c = document.getElementById('projects-list');
+            c.innerHTML = '<div class="spinner"></div>';
+            try {
+                const data = await Auth.api('/api/earner/projects');
+                if (!data.length) { c.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📁</div><div class="empty-state-text">No projects yet.</div></div>`; return; }
+                c.innerHTML = `<div class="grid-3">` + data.map(p => `
+                    <div class="card">
+                        <div class="card-title">${p.title}</div>
+                        <div class="card-subtitle" style="font-size:0.825rem;">${p.description || ''}</div>
+                        <div style="display:flex;gap:0.375rem;flex-wrap:wrap;margin-top:0.5rem;">
+                            ${p.projectUrl ? `<a href="${p.projectUrl}" target="_blank" class="btn btn-secondary btn-sm">View</a>` : ''}
+                            ${p.githubUrl ? `<a href="${p.githubUrl}" target="_blank" class="btn btn-secondary btn-sm">GitHub</a>` : ''}
+                        </div>
+                    </div>`).join('') + '</div>';
+            } catch (err) { c.innerHTML = `<div class="alert alert-error">${err.message}</div>`; }
+        }
+
+        async function loadMatches() {
+            const c = document.getElementById('match-list');
+            c.innerHTML = '<div class="spinner"></div>';
+            try {
+                const data = await Auth.api('/api/earner/matches');
+                if (!data.length) {
+                    c.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📊</div><div class="empty-state-text">No matches found. <a href="#" onclick="document.querySelector('[data-tab=profile]').click()" style="color:var(--primary);">Add your skills first</a></div></div>`;
+                    return;
+                }
+                c.innerHTML = `<div class="grid-2">` + data.map(m => `
+                    <div class="card">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                            <div>
+                                <div class="card-title">${m.opportunityTitle}</div>
+                                <div class="card-subtitle">${m.companyName} · ${m.opportunityType}</div>
+                            </div>
+                            <div class="match-ring">
+                                <div class="match-percent ${m.matchPercentage >= 70 ? 'high' : m.matchPercentage >= 40 ? 'medium' : 'low'}">${m.matchPercentage}%</div>
+                                <div style="font-size:0.7rem;color:var(--text-muted);">match</div>
+                            </div>
+                        </div>
+                        <div class="progress-container" style="margin-top:0.625rem;"><div class="progress-bar ${m.matchPercentage >= 70 ? 'success' : ''}" style="width:${m.matchPercentage}%"></div></div>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;font-size:0.8rem;color:var(--text-secondary);">
+                            ${m.matchedSkills && m.matchedSkills.length ? '<span>Matched: ' + m.matchedSkills.join(', ') + '</span>' : ''}
+                        </div>
+                        <div style="margin-top:0.75rem;">
+                            <a href="/opportunities.html?id=${m.opportunityId}" class="btn btn-primary btn-sm">Apply</a>
+                        </div>
+                    </div>`).join('') + '</div>';
+            } catch (err) { c.innerHTML = `<div class="alert alert-error">${err.message}</div>`; }
+        }
+
+        async function loadNotifs() {
+            const c = document.getElementById('notifs-list');
+            c.innerHTML = '<div class="spinner"></div>';
+            try {
+                const data = await Auth.api('/api/earner/notifications');
+                if (!data.length) { c.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🔔</div><div class="empty-state-text">No notifications.</div></div>`; return; }
+                c.innerHTML = data.map(n => `<div class="card" style="margin-bottom:0.625rem;${!n.read ? 'border-color:var(--primary);' : ''}">
+                    <div style="display:flex;justify-content:space-between;"><div><div style="font-weight:600;">${n.title}</div><div style="font-size:0.875rem;color:var(--text-secondary)">${n.message}</div></div>
+                    <div>${!n.read ? '<span class="badge badge-primary">New</span>' : ''}<div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.25rem;">${new Date(n.createdAt).toLocaleDateString()}</div></div></div></div>`).join('');
+            } catch (err) { c.innerHTML = `<div class="alert alert-error">${err.message}</div>`; }
+        }
+
+        let profileSkills = [];
+        async function loadProfile() {
+            try {
+                const data = await Auth.api('/api/earner/profile');
+                if (data) {
+                    ['bio','phoneNumber','city','country','linkedinUrl','githubUrl','portfolioUrl','yearsOfExperience'].forEach(f => {
+                        const el = document.getElementById(f);
+                        if (el && data[f] != null) el.value = data[f];
+                    });
+                    profileSkills = data.skills || [];
+                    renderSkills();
+                }
+            } catch { }
+        }
+
+        function renderSkills() {
+            document.getElementById('skills-display').innerHTML = profileSkills.map(s =>
+                `<span class="skill-badge">${s.name} <span class="skill-badge-remove" onclick="removeSkill(${s.id})">×</span></span>`
+            ).join('');
+        }
+
+        async function removeSkill(skillId) {
+            try {
+                await Auth.api(`/api/earner/skills/${skillId}`, { method: 'DELETE' });
+                profileSkills = profileSkills.filter(s => s.id !== skillId);
+                renderSkills();
+            } catch (err) { alert(err.message); }
+        }
+
+        async function searchSkill() {
+            const q = document.getElementById('skill-search').value;
+            if (!q) return;
+            try {
+                const data = await Auth.api(`/api/skills?search=${encodeURIComponent(q)}`);
+                document.getElementById('skill-results').innerHTML = data.map(s =>
+                    `<button onclick="addSkill(${s.id},'${s.name}')" class="btn btn-secondary btn-sm" style="margin:0.2rem;">${s.name}</button>`
+                ).join('') || '<span style="color:var(--text-muted);font-size:0.85rem;">No results found.</span>';
+            } catch { }
+        }
+
+        async function addSkill(id, name) {
+            try {
+                await Auth.api(`/api/earner/skills/${id}`, { method: 'POST' });
+                if (!profileSkills.find(s => s.id === id)) { profileSkills.push({ id, name }); }
+                renderSkills();
+                document.getElementById('skill-results').innerHTML = '';
+                document.getElementById('skill-search').value = '';
+            } catch (err) { alert(err.message); }
+        }
+
+        document.getElementById('profile-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const msg = document.getElementById('profile-msg');
+            const body = {};
+            ['bio','phoneNumber','city','country','linkedinUrl','githubUrl','portfolioUrl','yearsOfExperience'].forEach(f => { body[f] = document.getElementById(f).value; });
+            try {
+                await Auth.api('/api/earner/profile', { method: 'PUT', body: JSON.stringify(body) });
+                msg.innerHTML = '<div class="alert alert-success">Profile saved!</div>';
+                setTimeout(() => msg.innerHTML = '', 3000);
+            } catch (err) { msg.innerHTML = `<div class="alert alert-error">${err.message}</div>`; }
+        });
+
+        function openProjectModal() { document.getElementById('project-modal').classList.add('active'); }
+        function closeProjectModal() { document.getElementById('project-modal').classList.remove('active'); }
+
+        document.getElementById('project-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const msg = document.getElementById('project-msg');
+            const body = {
+                title: document.getElementById('p-title').value,
+                description: document.getElementById('p-desc').value,
+                projectUrl: document.getElementById('p-url').value,
+                githubUrl: document.getElementById('p-github').value,
+                demoUrl: document.getElementById('p-demo').value
+            };
+            try {
+                await Auth.api('/api/earner/projects', { method: 'POST', body: JSON.stringify(body) });
+                closeProjectModal();
+                loadProjects();
+            } catch (err) { msg.innerHTML = `<div class="alert alert-error">${err.message}</div>`; }
+        });
+
+        loadOverview();
+    </script>
+</body>
+</html>

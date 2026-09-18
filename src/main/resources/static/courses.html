@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Courses – MythBreak</title>
+    <meta name="description" content="Browse expert-led courses on MythBreak and build real skills."/>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <style>
+        .filter-bar { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.75rem; }
+        .filter-bar input, .filter-bar select { flex: 1; min-width: 160px; }
+        .level-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.15rem 0.5rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .level-BEGINNER { background: #ecfdf5; color: #065f46; }
+        .level-INTERMEDIATE { background: #fffbeb; color: #92400e; }
+        .level-ADVANCED { background: #fef2f2; color: #991b1b; }
+        .course-educator { font-size: 0.8rem; color: var(--text-secondary); }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">MythBreak</a>
+        <div class="navbar-links">
+            <a href="/courses.html" class="active">Courses</a>
+            <a href="/opportunities.html">Opportunities</a>
+        </div>
+        <div id="nav-user" style="display:flex;gap:0.625rem;align-items:center;">
+            <a href="/login.html" class="btn btn-secondary btn-sm">Login</a>
+            <a href="/register.html" class="btn btn-primary btn-sm">Sign up</a>
+        </div>
+    </nav>
+
+    <div class="page-wrapper">
+        <div class="section-header" style="margin-bottom:1.5rem;">
+            <div>
+                <h1 class="section-title">Courses</h1>
+                <p class="section-subtitle">Learn from qualified educators and build verifiable skills</p>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+            <input id="search" type="text" class="form-control" placeholder="Search by title or category..."/>
+            <select id="category-filter" class="form-control">
+                <option value="">All categories</option>
+                <option>Programming</option>
+                <option>Web</option>
+                <option>Database</option>
+                <option>Data Science</option>
+                <option>Design</option>
+                <option>Tools</option>
+            </select>
+            <select id="level-filter" class="form-control">
+                <option value="">All levels</option>
+                <option>BEGINNER</option>
+                <option>INTERMEDIATE</option>
+                <option>ADVANCED</option>
+            </select>
+            <button class="btn btn-primary" onclick="loadCourses()">Search</button>
+        </div>
+
+        <div id="courses-container"><div class="spinner"></div></div>
+    </div>
+
+    <div class="modal-overlay" id="enroll-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Enroll in course</h3>
+                <button class="modal-close" onclick="closeEnrollModal()">×</button>
+            </div>
+            <div id="enroll-course-info" style="margin-bottom:1rem;"></div>
+            <div id="enroll-msg"></div>
+            <button class="btn btn-primary btn-full" onclick="confirmEnroll()">Confirm enrollment</button>
+            <button class="btn btn-secondary btn-full" onclick="closeEnrollModal()" style="margin-top:0.5rem;">Cancel</button>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        if (Auth.isLoggedIn()) {
+            const u = Auth.getUser();
+            document.getElementById('nav-user').innerHTML = `
+                <span style="color:var(--text-secondary);font-size:0.875rem;">${u.firstName}</span>
+                <a href="${Auth.dashboardFor(u.role)}" class="btn btn-secondary btn-sm">Dashboard</a>
+                <button onclick="Auth.logout()" class="btn btn-secondary btn-sm">Logout</button>
+            `;
+        }
+
+        let selectedCourseId = null;
+
+        async function loadCourses() {
+            const container = document.getElementById('courses-container');
+            container.innerHTML = '<div class="spinner"></div>';
+            const search = document.getElementById('search').value;
+            const category = document.getElementById('category-filter').value;
+            const level = document.getElementById('level-filter').value;
+            const params = new URLSearchParams();
+            if (search) params.set('search', search);
+            if (category) params.set('category', category);
+            if (level) params.set('level', level);
+            try {
+                const data = await fetch(`/api/courses?${params}`).then(r => r.json());
+                if (!data.length) {
+                    container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📚</div><div class="empty-state-text">No courses found. Try different filters.</div></div>`;
+                    return;
+                }
+                container.innerHTML = `<div class="grid-3">` + data.map(c => `
+                    <div class="course-card">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;">
+                            <div class="course-title">${c.title}</div>
+                            ${c.level ? `<span class="level-tag level-${c.level}">${c.level}</span>` : ''}
+                        </div>
+                        <div class="course-educator">by ${c.educatorName || 'Educator'}</div>
+                        <div class="course-meta">
+                            <span>${c.category || 'General'}</span>
+                            <span>${c.price && c.price > 0 ? '₹' + c.price : 'Free'}</span>
+                            <span>${c.enrolledCount || 0} enrolled</span>
+                        </div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);flex:1;line-height:1.5;">${c.description ? c.description.slice(0, 100) + (c.description.length > 100 ? '...' : '') : ''}</div>
+                        <button onclick="openEnroll(${c.id}, '${c.title.replace(/'/g, "\\'")}')" class="btn btn-primary btn-sm" style="align-self:flex-start;margin-top:0.25rem;">Enroll</button>
+                    </div>`).join('') + '</div>';
+            } catch (err) {
+                container.innerHTML = `<div class="alert alert-error">Could not load courses: ${err.message}</div>`;
+            }
+        }
+
+        function openEnroll(courseId, title) {
+            if (!Auth.isLoggedIn()) { window.location.href = '/login.html'; return; }
+            if (Auth.getRole() !== 'LEARNER') {
+                alert('Only Learners can enroll in courses.');
+                return;
+            }
+            selectedCourseId = courseId;
+            document.getElementById('enroll-course-info').innerHTML = `<div class="card" style="margin-bottom:0;"><div class="card-title">${title}</div></div>`;
+            document.getElementById('enroll-msg').innerHTML = '';
+            document.getElementById('enroll-modal').classList.add('active');
+        }
+
+        function closeEnrollModal() {
+            document.getElementById('enroll-modal').classList.remove('active');
+        }
+
+        async function confirmEnroll() {
+            const msg = document.getElementById('enroll-msg');
+            try {
+                await Auth.api(`/api/learner/enrollments/${selectedCourseId}`, { method: 'POST' });
+                msg.innerHTML = '<div class="alert alert-success">Enrolled successfully!</div>';
+                setTimeout(() => { closeEnrollModal(); }, 2000);
+            } catch (err) {
+                msg.innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+            }
+        }
+
+        document.getElementById('search').addEventListener('keyup', e => { if (e.key === 'Enter') loadCourses(); });
+
+        loadCourses();
+    </script>
+</body>
+</html>

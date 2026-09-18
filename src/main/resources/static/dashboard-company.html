@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Company Dashboard – MythBreak</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">⚡ MythBreak</a>
+        <div id="nav-user" style="display:flex;gap:0.75rem;align-items:center;"></div>
+    </nav>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-tab="overview"><span class="sidebar-icon">🏠</span>Overview</a>
+                <a href="#" class="sidebar-link" data-tab="opportunities"><span class="sidebar-icon">📋</span>Opportunities</a>
+                <a href="#" class="sidebar-link" data-tab="applications"><span class="sidebar-icon">👥</span>Applications</a>
+                <a href="#" class="sidebar-link" data-tab="profile"><span class="sidebar-icon">🏢</span>Company Profile</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <!-- Overview -->
+            <div id="tab-overview">
+                <div class="section-header">
+                    <div>
+                        <h1 class="section-title" id="welcome-msg">🏢 Company Dashboard</h1>
+                        <p class="section-subtitle">Find the right talent, fast</p>
+                    </div>
+                </div>
+                <div class="grid-4" style="margin-bottom:2rem;">
+                    <div class="stat-card"><div class="stat-icon purple">📋</div><div><div class="stat-value" id="s-opps">—</div><div class="stat-label">Opportunities</div></div></div>
+                    <div class="stat-card"><div class="stat-icon green">✅</div><div><div class="stat-value" id="s-open">—</div><div class="stat-label">Open</div></div></div>
+                    <div class="stat-card"><div class="stat-icon blue">👥</div><div><div class="stat-value" id="s-apps">—</div><div class="stat-label">Total Applicants</div></div></div>
+                    <div class="stat-card"><div class="stat-icon pink">⭐</div><div><div class="stat-value" id="s-shortlisted">—</div><div class="stat-label">Shortlisted</div></div></div>
+                </div>
+                <div class="section-header"><h2 class="section-title" style="font-size:1.1rem;">Active Opportunities</h2></div>
+                <div id="recent-opps"><div class="spinner"></div></div>
+            </div>
+
+            <!-- Opportunities -->
+            <div id="tab-opportunities" style="display:none;">
+                <div class="section-header">
+                    <div><h2 class="section-title">Opportunities</h2><p class="section-subtitle">Manage your job postings</p></div>
+                    <button class="btn btn-primary btn-sm" onclick="openOppModal()">+ Post Opportunity</button>
+                </div>
+                <div id="opps-list"><div class="spinner"></div></div>
+            </div>
+
+            <!-- Applications -->
+            <div id="tab-applications" style="display:none;">
+                <div class="section-header">
+                    <div><h2 class="section-title">Applications</h2><p class="section-subtitle">Review candidates for your opportunities</p></div>
+                </div>
+                <div id="apps-list"><div class="spinner"></div></div>
+            </div>
+
+            <!-- Profile -->
+            <div id="tab-profile" style="display:none;">
+                <div class="section-header"><h2 class="section-title">Company Profile</h2></div>
+                <div class="card" style="max-width:560px;">
+                    <div id="profile-msg"></div>
+                    <form id="profile-form">
+                        <div class="form-group"><label class="form-label">Company Name *</label><input id="companyName" type="text" class="form-control" required/></div>
+                        <div class="form-group"><label class="form-label">Description</label><textarea id="description" class="form-control"></textarea></div>
+                        <div class="form-group"><label class="form-label">Industry</label><input id="industry" type="text" class="form-control" placeholder="e.g. Technology, Finance…"/></div>
+                        <div class="form-group"><label class="form-label">Website</label><input id="website" type="url" class="form-control"/></div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                            <div class="form-group"><label class="form-label">City</label><input id="city" type="text" class="form-control"/></div>
+                            <div class="form-group"><label class="form-label">Country</label><input id="country" type="text" class="form-control"/></div>
+                        </div>
+                        <div class="form-group"><label class="form-label">Company Size (employees)</label><input id="companySize" type="number" class="form-control" min="1"/></div>
+                        <div class="form-group"><label class="form-label">Phone</label><input id="phoneNumber" type="text" class="form-control"/></div>
+                        <button type="submit" class="btn btn-primary">Save Profile</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Post Opportunity Modal -->
+    <div class="modal-overlay" id="opp-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Post Opportunity</h3>
+                <button class="modal-close" onclick="closeOppModal()">×</button>
+            </div>
+            <div id="opp-msg"></div>
+            <form id="opp-form">
+                <div class="form-group"><label class="form-label">Title *</label><input id="o-title" type="text" class="form-control" required/></div>
+                <div class="form-group"><label class="form-label">Description</label><textarea id="o-desc" class="form-control"></textarea></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                    <div class="form-group"><label class="form-label">Type</label>
+                        <select id="o-type" class="form-control">
+                            <option>JOB</option><option>INTERNSHIP</option><option>FREELANCE</option><option>PROJECT</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label class="form-label">Location</label><input id="o-location" type="text" class="form-control" placeholder="Remote / City"/></div>
+                </div>
+                <div class="form-group"><label class="form-label">Salary Range</label><input id="o-salary" type="text" class="form-control" placeholder="e.g. ₹5L – ₹10L"/></div>
+                <div class="form-group"><label class="form-label">Application Deadline</label><input id="o-deadline" type="date" class="form-control"/></div>
+                <button type="submit" class="btn btn-primary btn-full">Post Opportunity</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        Auth.requireRole('COMPANY');
+        Auth.renderNavUser('nav-user');
+        const user = Auth.getUser();
+        document.getElementById('welcome-msg').textContent = `🏢 Welcome, ${user.firstName}!`;
+
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                const tab = link.dataset.tab;
+                document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
+                document.getElementById('tab-' + tab).style.display = '';
+                if (tab === 'opportunities') loadOpps();
+                if (tab === 'applications') loadApps();
+                if (tab === 'profile') loadProfile();
+            });
+        });
+
+        async function loadOverview() {
+            try {
+                const opps = await Auth.api('/api/company/opportunities').catch(() => []);
+                const allApps = await Auth.api('/api/company/applications').catch(() => []);
+                document.getElementById('s-opps').textContent = opps.length;
+                document.getElementById('s-open').textContent = opps.filter(o => o.status === 'OPEN').length;
+                document.getElementById('s-apps').textContent = allApps.length;
+                document.getElementById('s-shortlisted').textContent = allApps.filter(a => a.status === 'SHORTLISTED').length;
+                const container = document.getElementById('recent-opps');
+                const open = opps.filter(o => o.status === 'OPEN').slice(0, 6);
+                if (!open.length) { container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-text">No active opportunities. Post one now!</div></div>`; return; }
+                container.innerHTML = `<div class="grid-2">` + open.map(o => oppCard(o)).join('') + '</div>';
+            } catch (err) { console.error(err); }
+        }
+
+        function oppCard(o) {
+            return `<div class="opp-card">
+                <div class="opp-title">${o.title}</div>
+                <div class="opp-meta"><span>📍 ${o.location || 'Remote'}</span><span>💰 ${o.salaryRange || 'N/A'}</span><span>📅 ${o.deadline ? new Date(o.deadline).toLocaleDateString() : 'Open'}</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;">
+                    <span class="badge badge-primary">${o.type}</span>
+                    <span class="badge ${o.status === 'OPEN' ? 'badge-success' : 'badge-danger'}">${o.status}</span>
+                </div>
+            </div>`;
+        }
+
+        async function loadOpps() {
+            const c = document.getElementById('opps-list');
+            c.innerHTML = '<div class="spinner"></div>';
+            try {
+                const data = await Auth.api('/api/company/opportunities');
+                if (!data.length) { c.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-text">No opportunities posted yet.</div></div>`; return; }
+                c.innerHTML = `<div class="grid-2">` + data.map(o => `<div class="opp-card">
+                    <div class="opp-title">${o.title}</div>
+                    <div class="opp-meta"><span>${o.type}</span><span>📍 ${o.location || 'Remote'}</span></div>
+                    <div style="display:flex;gap:0.5rem;align-items:center;margin-top:0.75rem;">
+                        <span class="badge ${o.status === 'OPEN' ? 'badge-success' : 'badge-danger'}">${o.status}</span>
+                        <button onclick="closeOpp(${o.id})" class="btn btn-danger btn-sm" style="margin-left:auto;">Close</button>
+                    </div>
+                </div>`).join('') + '</div>';
+            } catch (err) { c.innerHTML = `<div class="alert alert-error">${err.message}</div>`; }
+        }
+
+        async function closeOpp(id) {
+            if (!confirm('Close this opportunity?')) return;
+            try {
+                await Auth.api(`/api/company/opportunities/${id}/close`, { method: 'PUT' });
+                loadOpps();
+            } catch (err) { alert(err.message); }
+        }
+
+        async function loadApps() {
+            const c = document.getElementById('apps-list');
+            c.innerHTML = '<div class="spinner"></div>';
+            try {
+                const data = await Auth.api('/api/company/applications');
+                if (!data.length) { c.innerHTML = `<div class="empty-state"><div class="empty-state-icon">👥</div><div class="empty-state-text">No applications received yet.</div></div>`; return; }
+                c.innerHTML = `<div class="table-container"><table><thead><tr><th>Applicant</th><th>Opportunity</th><th>Status</th><th>Applied</th><th>Action</th></tr></thead><tbody>` +
+                    data.map(a => `<tr>
+                        <td>${a.earnerName || '—'}</td>
+                        <td>${a.opportunityTitle || '—'}</td>
+                        <td><span class="badge ${statusBadge(a.status)}">${a.status}</span></td>
+                        <td>${new Date(a.appliedAt).toLocaleDateString()}</td>
+                        <td style="display:flex;gap:0.4rem;">
+                            ${a.status === 'APPLIED' ? `<button onclick="updateApp(${a.id},'SHORTLISTED')" class="btn btn-secondary btn-sm">Shortlist</button><button onclick="updateApp(${a.id},'REJECTED')" class="btn btn-danger btn-sm">Reject</button>` : ''}
+                            ${a.status === 'SHORTLISTED' ? `<button onclick="updateApp(${a.id},'SELECTED')" class="btn btn-success btn-sm">Select</button><button onclick="updateApp(${a.id},'REJECTED')" class="btn btn-danger btn-sm">Reject</button>` : ''}
+                        </td>
+                    </tr>`).join('') + `</tbody></table></div>`;
+            } catch (err) { c.innerHTML = `<div class="alert alert-error">${err.message}</div>`; }
+        }
+
+        function statusBadge(s) { return { APPLIED:'badge-info', SHORTLISTED:'badge-warning', SELECTED:'badge-success', REJECTED:'badge-danger' }[s] || 'badge-info'; }
+
+        async function updateApp(id, status) {
+            try {
+                await Auth.api(`/api/company/applications/${id}/status?status=${status}`, { method: 'PUT' });
+                loadApps();
+            } catch (err) { alert(err.message); }
+        }
+
+        async function loadProfile() {
+            try {
+                const data = await Auth.api('/api/company/profile');
+                if (data) ['companyName','description','industry','website','city','country','companySize','phoneNumber'].forEach(f => {
+                    const el = document.getElementById(f);
+                    if (el && data[f] != null) el.value = data[f];
+                });
+            } catch { }
+        }
+
+        document.getElementById('profile-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const msg = document.getElementById('profile-msg');
+            const body = {};
+            ['companyName','description','industry','website','city','country','companySize','phoneNumber'].forEach(f => { body[f] = document.getElementById(f).value; });
+            try {
+                await Auth.api('/api/company/profile', { method: 'PUT', body: JSON.stringify(body) });
+                msg.innerHTML = '<div class="alert alert-success">✅ Profile saved!</div>';
+                setTimeout(() => msg.innerHTML = '', 3000);
+            } catch (err) { msg.innerHTML = `<div class="alert alert-error">⚠️ ${err.message}</div>`; }
+        });
+
+        function openOppModal() { document.getElementById('opp-modal').classList.add('active'); }
+        function closeOppModal() { document.getElementById('opp-modal').classList.remove('active'); }
+
+        document.getElementById('opp-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const msg = document.getElementById('opp-msg');
+            const body = { title: document.getElementById('o-title').value, description: document.getElementById('o-desc').value, type: document.getElementById('o-type').value, location: document.getElementById('o-location').value, salaryRange: document.getElementById('o-salary').value, deadline: document.getElementById('o-deadline').value || null };
+            try {
+                await Auth.api('/api/company/opportunities', { method: 'POST', body: JSON.stringify(body) });
+                closeOppModal();
+                loadOpps();
+                loadOverview();
+            } catch (err) { msg.innerHTML = `<div class="alert alert-error">${err.message}</div>`; }
+        });
+
+        loadOverview();
+    </script>
+</body>
+</html>

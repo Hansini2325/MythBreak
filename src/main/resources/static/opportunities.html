@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Opportunities – MythBreak</title>
+    <meta name="description" content="Find jobs, internships and freelance projects matched to your skills on MythBreak."/>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <style>
+        .filter-bar { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.75rem; }
+        .filter-bar input, .filter-bar select { flex: 1; min-width: 150px; }
+        .type-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.15rem 0.5rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .type-JOB { background: #eff6ff; color: #1d4ed8; }
+        .type-INTERNSHIP { background: #ecfdf5; color: #065f46; }
+        .type-FREELANCE { background: #fffbeb; color: #92400e; }
+        .type-PROJECT { background: #f5f3ff; color: #6d28d9; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">MythBreak</a>
+        <div class="navbar-links">
+            <a href="/courses.html">Courses</a>
+            <a href="/opportunities.html" class="active">Opportunities</a>
+        </div>
+        <div id="nav-user" style="display:flex;gap:0.625rem;align-items:center;">
+            <a href="/login.html" class="btn btn-secondary btn-sm">Login</a>
+            <a href="/register.html" class="btn btn-primary btn-sm">Sign up</a>
+        </div>
+    </nav>
+
+    <div class="page-wrapper">
+        <div class="section-header" style="margin-bottom:1.5rem;">
+            <div>
+                <h1 class="section-title">Opportunities</h1>
+                <p class="section-subtitle">Jobs, internships, freelance projects, and open-source contributions</p>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+            <input id="search" type="text" class="form-control" placeholder="Search by title or description..."/>
+            <select id="type-filter" class="form-control">
+                <option value="">All types</option>
+                <option>JOB</option>
+                <option>INTERNSHIP</option>
+                <option>FREELANCE</option>
+                <option>PROJECT</option>
+            </select>
+            <button class="btn btn-primary" onclick="loadOpps()">Search</button>
+        </div>
+
+        <div id="opps-container"><div class="spinner"></div></div>
+    </div>
+
+    <div class="modal-overlay" id="apply-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Apply for opportunity</h3>
+                <button class="modal-close" onclick="closeApplyModal()">×</button>
+            </div>
+            <div id="apply-opp-info" style="margin-bottom:1rem;"></div>
+            <div id="apply-msg"></div>
+            <form id="apply-form">
+                <div class="form-group">
+                    <label class="form-label">Cover letter <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
+                    <textarea id="cover-letter" class="form-control" placeholder="Tell the company why you are a good fit for this role..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Submit application</button>
+                <button type="button" class="btn btn-secondary btn-full" onclick="closeApplyModal()" style="margin-top:0.5rem;">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        if (Auth.isLoggedIn()) {
+            const u = Auth.getUser();
+            document.getElementById('nav-user').innerHTML = `
+                <span style="color:var(--text-secondary);font-size:0.875rem;">${u.firstName}</span>
+                <a href="${Auth.dashboardFor(u.role)}" class="btn btn-secondary btn-sm">Dashboard</a>
+                <button onclick="Auth.logout()" class="btn btn-secondary btn-sm">Logout</button>
+            `;
+        }
+
+        let selectedOppId = null;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const focusId = urlParams.get('id');
+
+        async function loadOpps() {
+            const container = document.getElementById('opps-container');
+            container.innerHTML = '<div class="spinner"></div>';
+            const search = document.getElementById('search').value;
+            const type = document.getElementById('type-filter').value;
+            const params = new URLSearchParams();
+            if (search) params.set('search', search);
+            if (type) params.set('type', type);
+            try {
+                const data = await fetch(`/api/opportunities?${params}`).then(r => r.json());
+                if (!data.length) {
+                    container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">💼</div><div class="empty-state-text">No opportunities found. Try different filters.</div></div>`;
+                    return;
+                }
+                container.innerHTML = `<div class="grid-2">` + data.map(o => `
+                    <div class="opp-card" id="opp-${o.id}">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;">
+                            <div class="opp-title">${o.title}</div>
+                            <span class="type-tag type-${o.type}">${o.type}</span>
+                        </div>
+                        <div style="font-size:0.875rem;font-weight:600;color:var(--text);">${o.companyName || 'Company'}</div>
+                        <div class="opp-meta">
+                            <span>${o.location || 'Remote'}</span>
+                            ${o.salaryRange ? `<span>${o.salaryRange}</span>` : ''}
+                            ${o.deadline ? `<span>Deadline: ${new Date(o.deadline).toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'})}</span>` : ''}
+                        </div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;">${o.description ? o.description.slice(0, 150) + (o.description.length > 150 ? '...' : '') : ''}</div>
+                        <div class="opp-skills">
+                            ${(o.requiredSkills || []).slice(0, 5).map(s => `<span class="skill-badge">${s.name}</span>`).join('')}
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.25rem;">
+                            <span class="badge ${o.status === 'OPEN' ? 'badge-success' : 'badge-danger'}">${o.status}</span>
+                            ${o.status === 'OPEN' ? `<button onclick="openApply(${o.id}, '${o.title.replace(/'/g, "\\'")}')" class="btn btn-primary btn-sm">Apply</button>` : `<span style="font-size:0.8rem;color:var(--text-muted);">Closed</span>`}
+                        </div>
+                    </div>`).join('') + '</div>';
+
+                if (focusId) {
+                    setTimeout(() => {
+                        const el = document.getElementById(`opp-${focusId}`);
+                        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                }
+            } catch (err) {
+                container.innerHTML = `<div class="alert alert-error">Could not load opportunities: ${err.message}</div>`;
+            }
+        }
+
+        function openApply(oppId, title) {
+            if (!Auth.isLoggedIn()) { window.location.href = '/login.html'; return; }
+            if (Auth.getRole() !== 'EARNER') {
+                alert('Only Earners can apply to opportunities.');
+                return;
+            }
+            selectedOppId = oppId;
+            document.getElementById('apply-opp-info').innerHTML = `<div class="card" style="margin-bottom:0;"><div class="card-title">${title}</div></div>`;
+            document.getElementById('apply-msg').innerHTML = '';
+            document.getElementById('cover-letter').value = '';
+            document.getElementById('apply-modal').classList.add('active');
+        }
+
+        function closeApplyModal() {
+            document.getElementById('apply-modal').classList.remove('active');
+        }
+
+        document.getElementById('apply-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const msg = document.getElementById('apply-msg');
+            try {
+                await Auth.api('/api/earner/applications', {
+                    method: 'POST',
+                    body: JSON.stringify({ opportunityId: selectedOppId, coverLetter: document.getElementById('cover-letter').value })
+                });
+                msg.innerHTML = '<div class="alert alert-success">Application submitted successfully!</div>';
+                setTimeout(() => closeApplyModal(), 2000);
+            } catch (err) {
+                msg.innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+            }
+        });
+
+        document.getElementById('search').addEventListener('keyup', e => { if (e.key === 'Enter') loadOpps(); });
+
+        loadOpps();
+    </script>
+</body>
+</html>
