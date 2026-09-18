@@ -1,4 +1,4 @@
-# Problem Statement
+# 1. Problem Statement
 
 Many students and freshers learn technical and professional skills but face difficulty in converting those skills into real opportunities such as internships, jobs, freelance projects, and other forms of work. There is often a gap between **learning a skill, demonstrating it, and finding an opportunity that requires that skill**.
 
@@ -8,7 +8,7 @@ The project follows the core journey:
 
 **Learn → Build Skills → Showcase → Apply → Earn**
 
-# Scope of the Project
+# 2. Scope of the Project
 
 The scope of MythBreak includes the development of a web-based platform that connects **learners, earners, educators, and companies/recruiters** within a common skill-based ecosystem.
 
@@ -26,7 +26,7 @@ The project covers:
 
 The project focuses on providing a functional academic prototype of a skill-to-opportunity platform.
 
-# Target Users
+# 3. Target Users
 
 ### 1. Learners
 
@@ -44,7 +44,7 @@ Teachers, mentors, and skilled professionals who want to create and provide cour
 
 Organizations, startups, and recruiters who want to post opportunities and find candidates based on their required skills.
 
-# High-Level Features
+# 4. High-Level Features
 
 * **User Registration and Login** – Secure registration and authentication for different user roles.
 * **Role-Based Access** – Different functionalities are provided for Learners, Earners, Educators, and Companies/Recruiters.
